@@ -1,0 +1,143 @@
+#include<iostream>
+#include<stdlib.h>
+
+using namespace std;
+
+class prims
+{
+	private:
+		int a[10][10],spantree[10][10],n;
+		int visit[20],from[20],dist[20];
+	
+	public:
+		void dir();
+		void span();
+}c;
+
+void prims::dir()
+{
+	int v1,v2,i,j,w;
+	char ch;
+	
+	cout<<"\n\nEnter Number of nodes:";
+	cin>>n;
+
+	do
+	{
+		cout<<"\n\nEnter the Source vertex: ";
+		cin>>v1;
+		cout<<"\nEnter The Destination Vertex: ” ;
+		cin>>v2;
+		cout<<"\nEnter The Weight Of Edge: ";
+		cin>>w;
+
+		a[v1][v2]=w;
+		a[v2][v1]=w;
+	
+		cout<<"\n\nDo You Want To Continue?(Y/N): ” ;
+		//flushall();
+		cin>>ch;
+	}while(ch=='y'||ch=='Y');
+}
+
+void prims::span()
+{
+	int u,v,y,i,ne,mindist,j,mincost;
+	ne=0;
+	mincost=0;
+
+	cout<<"\nEnter Your Starting vertex: ";
+	cin>>v;
+
+	visit[v]=1;
+	for(i=0;i<n;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+			if(a[i][j]==0)
+			a[i][j]=9999;
+		}
+	}
+	for(i=0;i<n;i++)
+	{
+		dist[i]=a[0][i];
+	}
+	while(ne<=n-1)
+	{
+		mindist=9999;
+		for(i=0;i<n;i++)
+		{
+			if((visit[i]==0)&&(dist[i]<mindist))
+			{
+				v=i;
+				mindist=dist[i];
+			}
+		}
+		u=from[v];
+		spantree[u][v]=dist[v];
+		spantree[v][u]=dist[v];
+		visit[v]=1;
+		ne++;
+
+		for(i=1;i<n;i++)
+		{
+			if((visit [i]==0)&&(a[i][v]<dist[i]))
+			{
+				dist[i]=a[i][v];
+				from[i]=v;
+			}
+		}
+		mincost+=mindist;
+	}
+	mincost=mincost-9999;
+
+	cout<<"\nMinimum Spanning Tree is:\n”;
+
+	for(i=0;i<n;i++)
+	{
+		cout<<"\n”;
+
+		for(j=0;j<n;j++)
+		{
+			cout<<"\t”<<spantree[i][j];
+		}
+	}
+	cout<<"\n\nMinimum cost of Spanning tree is: ” <<mincost;
+}
+
+int main()
+{
+	int ch;
+	char f;
+
+	clrscr();
+	cout<<"\n\n\t\t\t\t\t\t\t\t\t\t\t…. Minimum Cost Spanning Tree Using Prim's Algorithm ….”;
+
+	do
+	{
+		cout<<"\n\n MENU: ";
+		cout<<"\n\n\t1.Create Graph\n\n\t2.Find Minimum Cost Spanning Tree\n\n\t3.Exit”;
+
+		cout<<"\n\nEnter Your Choice: ” ;
+		cin>>ch;
+
+		switch(ch)
+		{
+			case 1:
+						c.dir();
+						break;
+			case 2:
+						c.span();
+						break;
+			case 3:
+						break;
+			default:
+						cout<<"\n\nPlease Enter Valid choice.”;
+						break;
+		}
+		///flushall();
+		cout<<"\n\nDo You Want To Continue To main Program?(Y/N): ” ;
+		cin>>f;
+	}while(f=='Y' || f=='y');
+	getch();
+}
